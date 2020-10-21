@@ -1,1 +1,0 @@
-SELECT m.id, SUM(ii.quantity) AS sold FROM merchants m JOIN invoices v ON m.id = v.merchant_id JOIN invoice_items ii ON ii.invoice_id = v.id JOIN transactions t ON t.invoice_id = v.id WHERE t.result = 'success' AND v.status = 'shipped' GROUP BY m.id ORDER BY sold DESC LIMIT 8;
