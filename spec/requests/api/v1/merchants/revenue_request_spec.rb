@@ -82,4 +82,10 @@ RSpec.describe 'MERCHANT REVENUE API' do
       end
     end
   end
+
+  describe 'revenue across date range' do
+    it 'can do it' do
+      get "/api/v1/revenue?start=2012-03-09&end=2012-03-24"
+    end
+  end
 end
