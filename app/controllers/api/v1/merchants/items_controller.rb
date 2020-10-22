@@ -1,6 +1,6 @@
 class Api::V1::Merchants::ItemsController < ApplicationController
   def index
-    merchant = Merchant.find(params[:id])
-    render json: ItemSerializer.new(merchant.items)
+    return nil if !Merchant.is_merchant?(params[:id])
+    render json: ItemFacade.list_of_merchant_items(params[:id])
   end
 end

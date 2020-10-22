@@ -9,4 +9,8 @@ class Merchant < ApplicationRecord
     items.destroy_all
     self.destroy
   end
+
+  def self.is_merchant?(id)
+    find(id) rescue nil
+  end
 end

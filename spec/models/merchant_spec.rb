@@ -20,5 +20,9 @@ RSpec.describe Merchant, type: :model do
       expect(Merchant.count).to eq(0)
       expect(Item.count).to eq(0)
     end
+
+    it '#is_merchant?' do
+      expect(Merchant.is_merchant?(1)).to eq(nil)
+    end
   end
 end
