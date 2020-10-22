@@ -1,20 +1,8 @@
 class Api::V1::Merchants::SearchController < ApplicationController
   def index
-    if params[:created_at] || params[:updated_at]
-      if params[:created_at]
-        date = Date.parse(params[:created_at])
-        merchant = Merchant.where(created_at: date.beginning_of_day..date.end_of_day)
-      else
-        date = Date.parse(params[:updated_at])
-        merchant = Merchant.where(updated_at: date.beginning_of_day..date.end_of_day)
-      end
-      return nil if merchant.empty?
-      render json: MerchantSerializer.new(merchant)
-    else
-      merchants = Merchant.where('name ILIKE ?', "%#{params[:name].downcase}%")
-      return nil if merchants.empty?
-      render json: MerchantSerializer.new(merchants)
-    end
+    merchants = MerchantFacade.list_of_merchants_by_attribute(params.keys.first, params[params.keys.first])
+    return nil if merchants.empty?
+    render json: MerchantSerializer.new(merchants)
   end
 
   def show
