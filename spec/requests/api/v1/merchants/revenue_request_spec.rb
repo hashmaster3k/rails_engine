@@ -108,7 +108,7 @@ RSpec.describe 'MERCHANT REVENUE API' do
         json = JSON(response.body, symbolize_names: true)
 
         expect(json[:data]).to be_a(Hash)
-        expect(json[:data][:id]).to eq("null")
+        expect(json[:data][:id]).to eq(nil)
         expect(json[:data][:attributes]).to be_a(Hash)
         expect(json[:data][:attributes][:revenue]).to eq(28.6)
 
@@ -146,7 +146,7 @@ RSpec.describe 'MERCHANT REVENUE API' do
         json = JSON(response.body, symbolize_names: true)
 
         expect(json[:data]).to be_a(Hash)
-        expect(json[:data][:id]).to eq("null")
+        expect(json[:data][:id]).to eq(nil)
         expect(json[:data][:attributes]).to be_a(Hash)
         expect(json[:data][:attributes][:revenue]).to eq(29.48)
       end
