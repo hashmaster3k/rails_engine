@@ -9,7 +9,7 @@ class Api::V1::Merchants::RevenueController < ApplicationController
 
   def show
     return nil if !Merchant.is_merchant?(params[:id])
-    merchant = RevenueFacade.revenue_for_merchant(params[:id])
-    render json: {data: {id: "null", attributes: {revenue: merchant["revenue"].round(2)}}}
+    result = RevenueFacade.revenue_for_merchant(params[:id])
+    render json: {data: {id: "null", attributes: {revenue: result['revenue'].round(2)}}}
   end
 end
