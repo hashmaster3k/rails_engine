@@ -13,4 +13,8 @@ class Merchant < ApplicationRecord
   def self.is_merchant?(id)
     find(id) rescue nil
   end
+
+  def self.merchants_from_ids(ids)
+    find(ids)
+  end
 end
