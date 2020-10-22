@@ -7,20 +7,22 @@ class RevenueFacade
   end
 
   def self.revenue_for_merchant(id)
-    Merchant
-      .select("sum(invoice_items.quantity * invoice_items.unit_price) as revenue")
-      .joins(invoices: [:invoice_items, :transactions])
-      .where("transactions.result = 'success' AND invoices.status = 'shipped' AND merchants.id = #{id}")
-      .group('merchants.id')
-      .first
-      .revenue
+    revenue = Merchant
+                .select("sum(invoice_items.quantity * invoice_items.unit_price) as revenue")
+                .joins(invoices: [:invoice_items, :transactions])
+                .where("transactions.result = 'success' AND invoices.status = 'shipped' AND merchants.id = #{id}")
+                .group('merchants.id')
+                .first
+                .revenue
+      Revenue.new(revenue)
   end
 
   def self.revenue_between_dates(start_date, end_date)
-    Invoice
-      .joins(:invoice_items, :transactions)
-      .where("transactions.result = 'success' AND invoices.status = 'shipped' AND invoices.created_at BETWEEN '#{start_date.to_date.beginning_of_day.to_s}' AND '#{end_date.to_date.end_of_day.to_s}'")
-      .sum("invoice_items.quantity * invoice_items.unit_price")
+    revenue = Invoice
+                .joins(:invoice_items, :transactions)
+                .where("transactions.result = 'success' AND invoices.status = 'shipped' AND invoices.created_at BETWEEN '#{start_date.to_date.beginning_of_day.to_s}' AND '#{end_date.to_date.end_of_day.to_s}'")
+                .sum("invoice_items.quantity * invoice_items.unit_price")
+    Revenue.new(revenue)
   end
 
   private
