@@ -7,7 +7,13 @@ class RevenueFacade
   end
 
   def self.revenue_for_merchant(id)
-    ActiveRecord::Base.connection.execute("SELECT SUM(ii.quantity * ii.unit_price) AS revenue FROM merchants m JOIN items i ON i.merchant_id = m.id JOIN invoice_items ii ON i.id = ii.item_id JOIN invoices v ON v.id = ii.invoice_id JOIN transactions t ON t.invoice_id = v.id WHERE t.result = 'success' AND v.status = 'shipped' AND m.id = '#{id}';").first
+    Merchant
+      .select("sum(invoice_items.quantity * invoice_items.unit_price) as revenue")
+      .joins(invoices: [:invoice_items, :transactions])
+      .where("transactions.result = 'success' AND invoices.status = 'shipped' AND merchants.id = #{id}")
+      .group('merchants.id')
+      .first
+      .revenue
   end
 
   def self.revenue_between_dates(start_date, end_date)
