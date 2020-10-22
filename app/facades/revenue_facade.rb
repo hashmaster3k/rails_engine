@@ -10,6 +10,10 @@ class RevenueFacade
     ActiveRecord::Base.connection.execute("SELECT SUM(ii.quantity * ii.unit_price) AS revenue FROM merchants m JOIN items i ON i.merchant_id = m.id JOIN invoice_items ii ON i.id = ii.item_id JOIN invoices v ON v.id = ii.invoice_id JOIN transactions t ON t.invoice_id = v.id WHERE t.result = 'success' AND v.status = 'shipped' AND m.id = '#{id}';").first
   end
 
+  def self.revenue_between_dates(start_date, end_date)
+    ActiveRecord::Base.connection.execute("SELECT SUM(ii.quantity * ii.unit_price) AS revenue FROM invoices v JOIN invoice_items ii ON ii.invoice_id = v.id JOIN transactions t ON t.invoice_id = v.id WHERE t.result = 'success' AND v.status = 'shipped' AND v.created_at BETWEEN '#{start_date.to_date.beginning_of_day.to_s}' AND '#{end_date.to_date.end_of_day.to_s}';").first
+  end
+
   private
 
   def self.most_items_sold(quantity)
